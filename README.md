@@ -2,7 +2,7 @@
 
 # Portfolio Website (Kaboom.js Interactive Room)
 
-This is a personal portfolio site built with **Kaboom.js**, where visitors can explore an interactive 2D room and open pop-up modals to learn more about you, your projects, and your experience.
+This is a personal portfolio site built with **Kaboom.js**, where visitors can explore an interactive 2D room and open pop-up modals to learn more about me (Evy!), my projects, and my experience.
 
 ## Features
 - **Interactive Player**: Move around the room using arrow keys or WASD.
@@ -17,3 +17,4 @@ The site uses [Kaboom.js](https://kaboomjs.com/) for rendering the game scene an
 - Arrow keys (↑ ↓ ← →) or WASD to move
 - Walk into a hotspot to trigger a modal
 - Click "Close" to dismiss the modal
+
