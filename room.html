@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Evy Ng</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      font-family: sans-serif;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+    }
+ 
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+    }
+    .close-btn {
+      background: #333;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- popups -->
+
+<!-- Debug button for animation -->
+<button id="debugWalkBtn" style="position:fixed;top:10px;right:10px;z-index:1000;">Debug: Play Walk Animation</button>
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <h2>About Me</h2>
+    <p>Write about yourself here!</p>
+    <button class="close-btn" onclick="closeModal('aboutModal')">Close</button>
+  </div>
+</div>
+
+<div id="projectsModal" class="modal">
+  <div class="modal-content">
+    <h2>Projects</h2>
+    <p>List your projects here!</p>
+    <button class="close-btn" onclick="closeModal('projectsModal')">Close</button>
+  </div>
+</div>
+
+<div id="experienceModal" class="modal">
+  <div class="modal-content">
+    <h2>Experience</h2>
+    <p>Share your work experience here!</p>
+    <button class="close-btn" onclick="closeModal('experienceModal')">Close</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/kaboom/dist/kaboom.js"></script>
+<script>
+// Debug button to force walk animation
+document.getElementById("debugWalkBtn").onclick = function() {
+  player.play("walk");
+};
+
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// initialize Kaboom
+kaboom({
+  width: 800,
+  height: 480,
+  background: [0, 0, 0],
+  scale: 2
+});
+
+// loading art assets
+loadSprite("room", "room.png");    
+
+loadSprite("player_front", "player_front.png", {
+  sliceX: 3,
+  anims: {
+    idle: { from: 0, to: 0 },
+    walk: { from: 0, to: 2, loop: true }
+  }
+});
+
+loadSprite("player_back", "player_back.png", {
+  sliceX: 3,
+  anims: {
+    idle: { from: 0, to: 0 },
+    walk: { from: 0, to: 2, loop: true }
+  }
+});
+
+loadSprite("player_left", "player_left.png", {
+  sliceX: 3,
+  anims: {
+    idle: { from: 0, to: 0 },
+    walk: { from: 0, to: 2, loop: true }
+  }
+});
+
+loadSprite("player_right", "player_right.png", {
+  sliceX: 3,
+  anims: {
+    idle: { from: 0, to: 0 },
+    walk: { from: 0, to: 2, loop: true }
+  }
+});
+
+add([
+  sprite("room"),
+  z(0),
+  pos(0, 0)
+]);
+
+// defaulting player direction
+let currentDir = "front";
+const player = add([
+  sprite("player_front"),
+  pos(640, 125),
+  z(1), 
+  scale(1.5)
+]);
+
+player.play("idle");
+
+const SPEED = 80;
+
+// set player direction and animation
+function setDirection(dir, anim) {
+  if (currentDir !== dir) 
+  {
+    player.use(sprite("player_" + dir));
+    currentDir = dir;
+    player.play(anim);
+  }
+}
+
+// movement
+onKeyDown("left", () => {
+  setDirection("left", "walk");
+  player.move(-SPEED, 0);
+});
+
+onKeyDown("right", () => {
+  setDirection("right", "walk");
+  player.move(SPEED, 0);
+});
+
+onKeyDown("up", () => {
+  setDirection("back", "walk");
+  player.move(0, -SPEED);
+});
+
+onKeyDown("down", () => {
+  setDirection("front", "walk");
+  player.move(0, SPEED);
+});
+
+// stop walking animation when no keys are pressed
+onKeyRelease(() => {
+  if (
+    !isKeyDown("left") &&
+    !isKeyDown("right") &&
+    !isKeyDown("up") &&
+    !isKeyDown("down")
+  ) {
+    player.play("idle");
+  }
+});
+
+
+// creating hotspots
+function createHotspot(x, y, w, h, onEnter) {
+  const spot = add([
+    rect(w, h),
+    pos(x, y),
+    area(),
+    opacity(0) // invisible
+  ]);
+  player.onCollide(spot, onEnter);
+}
+
+createHotspot(200, 150, 32, 32, () => openModal("aboutModal"));
+createHotspot(300, 200, 32, 32, () => openModal("projectsModal"));
+createHotspot(400, 250, 32, 32, () => openModal("experienceModal"));
+</script>
+
+</body>
+</html>
