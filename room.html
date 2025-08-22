@@ -2,55 +2,21 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Evy Ng</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      font-family: sans-serif;
-    }
-    canvas {
-      display: block;
-      margin: auto;
-    }
- 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 400px;
-      text-align: center;
-    }
-    .close-btn {
-      background: #333;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-  </style>
+  <title>✿ Evy Ng ✿</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- popups -->
-
-<!-- Debug button for animation -->
-<button id="debugWalkBtn" style="position:fixed;top:10px;right:10px;z-index:1000;">Debug: Play Walk Animation</button>
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <h2>About Me</h2>
-    <p>Write about yourself here!</p>
+    <p>Hi, I'm Evy! (Pronounced like the Pokémon) Currently, I'm pursuing a major in Computer Science at the University
+      of Colorado, Boulder with a minor in Creative Technology and Design. I have a passion for game development and
+      interactive media. I love creating immersive experiences that blend technology and creativity.</p>
+    <p>In my free time, I enjoy creating art, playing video games, and making fun memories with friends. I'm always looking
+      for new challenges and opportunities to learn and grow in the field.</p>
+    <p>Contact: evy.ng2003@gmail.com</p>
     <button class="close-btn" onclick="closeModal('aboutModal')">Close</button>
   </div>
 </div>
@@ -67,25 +33,32 @@
   <div class="modal-content">
     <h2>Experience</h2>
     <p>Share your work experience here!</p>
+        <div style="margin: 15px 0;">
+      <a href="resume.pdf" download="Evy_Ng_Resume.pdf" 
+         style="background: #007bff; color: white; padding: 10px 20px; 
+                text-decoration: none; border-radius: 5px; 
+                display: inline-block; margin-right: 10px;">
+        📄 Download Resume
+      </a>
+    </div>
     <button class="close-btn" onclick="closeModal('experienceModal')">Close</button>
   </div>
 </div>
 
 <script src="https://unpkg.com/kaboom/dist/kaboom.js"></script>
 <script>
-// Debug button to force walk animation
-document.getElementById("debugWalkBtn").onclick = function() {
-  player.play("walk");
-};
 
-function openModal(id) {
+function openModal(id)
+{
   document.getElementById(id).style.display = "flex";
 }
-function closeModal(id) {
+
+function closeModal(id)
+{
   document.getElementById(id).style.display = "none";
 }
 
-// initialize Kaboom
+//initialize Kaboom
 kaboom({
   width: 800,
   height: 480,
@@ -93,10 +66,12 @@ kaboom({
   scale: 2
 });
 
-// loading art assets
+//loading art assets
 loadSprite("room", "room.png");    
+loadSprite("location", "location.png");
 
-loadSprite("player_front", "player_front.png", {
+loadSprite("player_front", "player_front.png",
+{
   sliceX: 3,
   anims: {
     idle: { from: 0, to: 0 },
@@ -104,7 +79,8 @@ loadSprite("player_front", "player_front.png", {
   }
 });
 
-loadSprite("player_back", "player_back.png", {
+loadSprite("player_back", "player_back.png",
+{
   sliceX: 3,
   anims: {
     idle: { from: 0, to: 0 },
@@ -112,7 +88,8 @@ loadSprite("player_back", "player_back.png", {
   }
 });
 
-loadSprite("player_left", "player_left.png", {
+loadSprite("player_left", "player_left.png",
+{
   sliceX: 3,
   anims: {
     idle: { from: 0, to: 0 },
@@ -120,7 +97,8 @@ loadSprite("player_left", "player_left.png", {
   }
 });
 
-loadSprite("player_right", "player_right.png", {
+loadSprite("player_right", "player_right.png",
+{
   sliceX: 3,
   anims: {
     idle: { from: 0, to: 0 },
@@ -134,21 +112,51 @@ add([
   pos(0, 0)
 ]);
 
-// defaulting player direction
+//create location markers
+const projectsLocation = add([
+  sprite("location"),
+  pos(164, 100),
+  scale(0.5),
+  z(2),
+  area(),
+  "hotspot"
+]);
+
+const experienceLocation = add([
+  sprite("location"),
+  pos(164, 260),
+  scale(0.5),
+  z(2),
+  area(),
+  "hotspot"
+]);
+
+const aboutLocation = add([
+  sprite("location"),
+  pos(615, 300),
+  scale(0.5),
+  z(2),
+  area(),
+  "hotspot"
+]);
+
+//defaulting player 
 let currentDir = "front";
 const player = add([
   sprite("player_front"),
   pos(640, 125),
   z(1), 
-  scale(1.5)
+  scale(1.5),
+  area()
 ]);
 
 player.play("idle");
 
 const SPEED = 80;
 
-// set player direction and animation
-function setDirection(dir, anim) {
+//set player direction and animation
+function setDirection(dir, anim)
+{
   if (currentDir !== dir) 
   {
     player.use(sprite("player_" + dir));
@@ -157,8 +165,9 @@ function setDirection(dir, anim) {
   }
 }
 
-// movement
-onKeyDown("left", () => {
+//movement
+onKeyDown("left", () =>
+{
   setDirection("left", "walk");
   player.move(-SPEED, 0);
 });
@@ -178,7 +187,7 @@ onKeyDown("down", () => {
   player.move(0, SPEED);
 });
 
-// stop walking animation when no keys are pressed
+//stop walking animation when no keys are pressed
 onKeyRelease(() => {
   if (
     !isKeyDown("left") &&
@@ -190,21 +199,38 @@ onKeyRelease(() => {
   }
 });
 
+//tracking to prevent multiple modals from opening
+let modalCooldowns =
+{
+  about: false,
+  projects: false,
+  experience: false
+};
 
-// creating hotspots
-function createHotspot(x, y, w, h, onEnter) {
-  const spot = add([
-    rect(w, h),
-    pos(x, y),
-    area(),
-    opacity(0) // invisible
-  ]);
-  player.onCollide(spot, onEnter);
-}
+//hotspot collisions
+player.onCollide("hotspot", (hotspot) => {
+  console.log("Collision detected with hotspot at:", hotspot.pos);
+  
+  if (hotspot === aboutLocation && !modalCooldowns.about)
+  {
+    openModal("aboutModal");
+    modalCooldowns.about = true;
+    setTimeout(() => { modalCooldowns.about = false; }, 1000); 
+  }
+  else if (hotspot === projectsLocation && !modalCooldowns.projects)
+  {
+    openModal("projectsModal");
+    modalCooldowns.projects = true;
+    setTimeout(() => { modalCooldowns.projects = false; }, 1000);
+  } 
+  else if (hotspot === experienceLocation && !modalCooldowns.experience)
+  {
+    openModal("experienceModal");
+    modalCooldowns.experience = true;
+    setTimeout(() => { modalCooldowns.experience = false; }, 1000);
+  }
+});
 
-createHotspot(200, 150, 32, 32, () => openModal("aboutModal"));
-createHotspot(300, 200, 32, 32, () => openModal("projectsModal"));
-createHotspot(400, 250, 32, 32, () => openModal("experienceModal"));
 </script>
 
 </body>
