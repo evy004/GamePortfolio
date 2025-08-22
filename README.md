@@ -1,8 +1,8 @@
 ﻿# GamePortfolio
 
-# Portfolio Website (Kaboom.js Interactive Room)
+# Portfolio Website
 
-This is a personal portfolio site built with **Kaboom.js**, where visitors can explore an interactive 2D room and open pop-up modals to learn more about me (Evy!), my projects, and my experience.
+This is a personal portfolio site built with **Kaboom.js**, where visitors can explore an interactive 2D room and open pop-up modals to learn more about me (Evy!), my projects, and my experience. This was built to showcase my interest in game development and design, where all art assets were drawn by me. I took inspiration from the popular games Stardew Valley and Minecraft for styling.
 
 ## Features
 - **Interactive Player**: Move around the room using arrow keys or WASD.
@@ -17,4 +17,5 @@ The site uses [Kaboom.js](https://kaboomjs.com/) for rendering the game scene an
 - Arrow keys (↑ ↓ ← →) or WASD to move
 - Walk into a hotspot to trigger a modal
 - Click "Close" to dismiss the modal
+
 
